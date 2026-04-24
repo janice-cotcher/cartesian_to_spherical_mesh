@@ -1,5 +1,5 @@
 import numpy as np
-from polar_convert import *
+from spherical_convert import *
 from stl import mesh
 
 file = "cube.stl"
