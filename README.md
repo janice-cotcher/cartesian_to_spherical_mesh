@@ -36,8 +36,13 @@
 
 Run the transformation script with the example STL file:
 
+### Mac or Linux
 ```bash
 python3 spherical_transform.py
+```
+### Windows
+```bash
+python spherical_transform.py
 ```
 
 The script reads `stl/cube.stl`, converts mesh vertices between Cartesian and spherical coordinates, and saves a new STL file called `output.stl`.
