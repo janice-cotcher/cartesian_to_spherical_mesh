@@ -12,6 +12,7 @@ def cartesian_to_spherical(x, y, z):
     # Use hypot(x, y) to get the distance in the xy plane
     phi = np.arctan2(np.hypot(x, y), z)
 
+
     return r, theta, phi
 
 
