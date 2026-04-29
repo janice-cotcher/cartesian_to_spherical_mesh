@@ -1,5 +1,5 @@
 import numpy as np
-from spherical_convert import *
+from spherical_utilities import *
 from stl import mesh
 
 
