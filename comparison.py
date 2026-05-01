@@ -3,7 +3,7 @@ from stl import mesh
 from spherical_utilities import *
 from new import data
 import matplotlib.pyplot as plt
-
+# import plotly
 cut = np.array(data)
 triangles = []
 points = []
@@ -21,5 +21,18 @@ for triangle in data:
 r,theta,phi = cartesian_to_spherical(np.array(x),np.array(y),np.array(z))
 new_phi = phi + np.deg2rad(45)
 new_x, new_y, new_z = spherical_to_cartesian(r, theta, new_phi)
+old_mesh = np.stack([x,y,z], axis=-1)
+new_mesh = np.stack([new_x, new_y, new_z], axis=-1)
 
-fig, ax = plt.plot()
+
+
+fig = plt.figure()
+ax = fig.add_subplot(projection='3d')
+ax.plot_surface(x, y, z)
+ax.set_aspect('equal')
+
+# plt.show()
+# ax2 = fig.add_subplot(111, projection='3d')
+# ax2.plot(new_x, new_y, new_z)
+
+plt.savefig("comparison.png")
