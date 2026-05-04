@@ -1,4 +1,5 @@
 import numpy as np
+import trimesh
 
 def cartesian_to_spherical(x, y, z):
     hypotenuse2d = np.hypot(x, y)
@@ -30,3 +31,26 @@ def get_overhang(phi):
     phi: polar angle (0 to pi)
     """
     return phi > np.deg2rad(135)
+
+def get_vertices(points):
+    unique_rows, indices = np.unique(points, axis=0, return_index=True)
+    return unique_rows
+
+def get_faces(vertices, points, rows):
+    faces = np.zeros((rows), dtype="float64")
+    for index in range(rows):
+        try:
+            match = np.where((vertices == points[index]).all(axis=1))
+            faces[index] = match[0][0]
+        except Exception as e:
+            continue
+    return np.reshape(faces, (16, 3))
+
+def mesh_components(data):
+    triangles = np.array(data)
+    rows = triangles.size // 3
+    points = np.reshape(triangles, (rows, 3))
+    vertices = get_vertices(points)
+    faces = get_faces(vertices, points, rows)
+
+    return points, vertices, faces

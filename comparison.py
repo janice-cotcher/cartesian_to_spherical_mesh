@@ -1,58 +1,22 @@
 import numpy as np
-from stl import mesh
+# from stl import mesh
 from spherical_utilities import *
 from new import data
-import matplotlib.pyplot as plt
-# import plotly
-# import trimesh
-# from scipy.spatial import Delaunay
-
-triangles = np.array(data)
-
-points = [(point for point in triangle) for triangle in triangles]
-print(points)
-# x = []
-# y = []
-# z = []
-# for triangle in data:
-#     triangles.append(triangle)
-#     for point in triangle:
-#         points.append(point)
-#         x.append(point[0])
-#         y.append(point[1])
-#         z.append(point[2])
-# x = np.array(x)
-# y = np.array(y)
-# z = np.array(z)
-# r,theta,phi = cartesian_to_spherical(x,y,z)
-# new_phi = phi + np.deg2rad(45)
-# new_x, new_y, new_z = spherical_to_cartesian(r, theta, new_phi)
-# old_mesh = np.stack([x,y,z], axis=-1)
-# new_mesh = np.stack([new_x, new_y, new_z], axis=-1)
+import trimesh
 
 
-# X, Y, Z = np.meshgrid(x, y, z, indexing='ij')
-# New_x, New_y, New_z = np.meshgrid(new_x, new_y, new_z)
-# fig = plt.figure()
-# ax = fig.add_subplot(projection='3d')
-# ax.plot_surface(x, y, z)
-# ax.set_aspect('equal')
+points, vertices, faces = mesh_components(data)
+mesh = trimesh.Trimesh(vertices=vertices, faces=faces)
 
-# plt.show()
-# # ax2 = fig.add_subplot(111, projection='3d')
-# # ax2.plot(new_x, new_y, new_z)
+# Slicing: array[row_start:row_end, column_index]
+x = points[:,0]
+y = points[:,1]
+z = points[:,2]
 
-# plt.savefig("comparison.png")
-
-# Flatten data for processing
-# points = np.vstack((x.flatten(), y.flatten(), z.flatten())).T
-
-# # 2. Triangulate the 2D grid points (X, Y)
-# points2d = np.vstack((x.flatten(), y.flatten())).T
-# tri = Delaunay(points2d)
-
-# # 3. Create the mesh
-# mesh = trimesh.Trimesh(vertices=points, faces=tri.simplices)
-
-# # 4. Export to STL
-# mesh.export("surface.stl")
+r, theta, phi = cartesian_to_spherical(x, y, z)
+phi += np.deg2rad(135)
+new_x, new_y, new_z = spherical_to_cartesian(r, theta, phi)
+new_data = np.stack([new_x, new_y, new_z], axis=-1)
+new_points, new_vertices, new_faces = mesh_components(new_data)
+new_mesh = trimesh.Trimesh(vertices=new_vertices, faces=new_faces)
+new_mesh.show()
